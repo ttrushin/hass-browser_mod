@@ -184,7 +184,7 @@ class BrowserMod {
         window.location.reload(false);
         break;
       case "post-wrapper-app-msg":
-        window.webkit.messageHandlers.wrapperApp.postMessage(msg)
+        this.post_wrapper_app_msg(msg);
         break;
 
       case "blackout":
@@ -315,6 +315,15 @@ class BrowserMod {
     const ll = lovelace_view();
     if (ll)
       fireEvent("config-refresh", {}, ll);
+  }
+
+  post_wrapper_app_msg(msg) {
+    const message = msg.message || msg.payload;
+    try {
+      window.webkit.messageHandlers.wrapperApp.postMessage(message);
+    } catch(error) {
+      console.error(`Error in post_wrapper_app_msg`, error);
+    }
   }
 
   blackout(msg){
