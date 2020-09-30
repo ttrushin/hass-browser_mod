@@ -130,7 +130,7 @@ class BrowserMod {
     conn.subscribeMessage((msg) => this.callback(msg), {
       type: 'browser_mod/connect',
       deviceID: deviceID,
-      });
+    });
   }
 
   callback(msg) {
@@ -182,6 +182,9 @@ class BrowserMod {
         break;
       case "window-reload":
         window.location.reload(false);
+        break;
+      case "post-wrapper-app-msg":
+        window.webkit.messageHandlers.wrapperApp.postMessage(msg)
         break;
 
       case "blackout":

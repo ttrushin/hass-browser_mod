@@ -28,6 +28,7 @@ USER_COMMANDS = [
         "set-theme",
         "lovelace-reload",
         "window-reload",
+        "post-wrapper-app-msg"
         "blackout",
         "no-blackout",
         "toast",
