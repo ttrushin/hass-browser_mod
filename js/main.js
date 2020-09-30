@@ -1,4 +1,4 @@
-import { deviceID } from "card-tools/src/deviceId";
+import { deviceID } from "card-tools/src/deviceID";
 import { lovelace_view, provideHass, load_lovelace, lovelace, hass } from "card-tools/src/hass";
 import { popUp, closePopUp } from "card-tools/src/popup";
 import { fireEvent } from "card-tools/src/event";
@@ -177,9 +177,11 @@ class BrowserMod {
       case "set-theme":
         this.set_theme(msg);
         break;
-
       case "lovelace-reload":
         this.lovelace_reload(msg);
+        break;
+      case "window-reload":
+        window.location.reload(false);
         break;
 
       case "blackout":
