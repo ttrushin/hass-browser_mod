@@ -339,6 +339,12 @@ class BrowserMod {
       return;
     }
 
+    // If deviceID is specified, check that it matches
+    // the current device
+    if (d.deviceID && d.deviceID !== deviceID) {
+      return
+    }
+
     window.setTimeout(() => {
       // Close more-info popup
       fireEvent("hass-more-info", {entityId: "."}, document.querySelector("home-assistant"));
