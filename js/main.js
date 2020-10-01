@@ -64,6 +64,7 @@ class BrowserMod {
       window.setTimeout(this._load_lovelace.bind(this), 500);
       this._connect();
       document.querySelector("home-assistant").addEventListener("hass-more-info", this.popup_card.bind(this));
+      document.querySelector("home-assistant").addEventListener("hass-more-info", this.post_wrapper_app_msg_from_event.bind(this));
     } else {
       this.connect(hass().connection);
     }
@@ -317,8 +318,38 @@ class BrowserMod {
       fireEvent("config-refresh", {}, ll);
   }
 
+  post_wrapper_app_msg_from_event(event) {
+    const ll = lovelace();
+
+    if (!ll) {
+      return
+    }
+
+    const data = {
+      ...ll.config.dispatch_wrapper_app_message,
+      ...ll.config.views[ll.current_view].dispatch_wrapper_app_message,
+    };
+
+    if (!event.detail || !event.detail.entityId) {
+      return;
+    }
+
+    const d = data[event.detail.entityId];
+    if (!d) {
+      return;
+    }
+
+    window.setTimeout(() => {
+      // Close more-info popup
+      fireEvent("hass-more-info", {entityId: "."}, document.querySelector("home-assistant"));
+
+      // Dispatch wrapper app message
+      this.post_wrapper_app_msg({ message: d.message })
+    }, 50);
+  }
   post_wrapper_app_msg(msg) {
     const message = msg.message || msg.payload;
+
     try {
       window.webkit.messageHandlers.wrapperApp.postMessage(message);
     } catch(error) {
